@@ -19,7 +19,7 @@ from pageObjects.login import LoginPage
 from utils.browserutils import BrowserUtils
 from pageObjects.Checkout_Confirmation import Checkout_Confirmation
 
-test_data_path = '../data/test_e2eTestFramework.json'
+test_data_path = './data/test_e2eTestFramework.json'
 #test_data_path = r"C:\Users\Prasad\OneDrive\Desktop\Interprep\SeleniumT\PageObject\data\test_e2eTestFramework.json"
 
 with open(test_data_path) as f:
