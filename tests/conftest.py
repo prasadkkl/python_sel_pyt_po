@@ -58,7 +58,7 @@ def browserInstance(request):
     browser_name = request.config.getoption("browser_name") or "firefox"
 
     if browser_name == "chrome":
-        # ✅ Add Chrome options to disable password manager
+        # Add Chrome options to disable password manager
         chrome_options = Options()
         chrome_options.add_experimental_option(
             "prefs",
