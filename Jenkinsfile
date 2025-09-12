@@ -1,9 +1,8 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.8.10'
-            args '-u root:root' // Run as root if needed for pip installs
-        }
+    agent any   // Runs on any available Jenkins agent
+
+    environment {
+        VENV_DIR = 'venv'
     }
 
     stages {
@@ -14,10 +13,25 @@ pipeline {
             }
         }
 
+        stage('Setup Python Environment') {
+            steps {
+                echo 'Setting up virtual environment and installing dependencies...'
+                
+                // Create virtual environment
+                sh 'python3.8 -m venv ${VENV_DIR}'
+
+                // Activate virtualenv and install requirements
+            }
+        }
+
         stage('Run Tests') {
             steps {
-                echo 'Executing run_tests.sh...'
-                sh './run_tests.sh'
+                echo 'Executing tests using run_tests.sh...'
+                
+                sh '''
+                    source ${VENV_DIR}/bin/activate
+                    ./run_tests.sh
+                '''
             }
         }
 
@@ -31,7 +45,8 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline finished.'
+            echo 'Cleaning up...'
+            sh 'rm -rf ${VENV_DIR}'
         }
 
         success {
