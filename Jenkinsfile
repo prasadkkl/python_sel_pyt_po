@@ -1,5 +1,10 @@
 pipeline {
-    agent any   // Runs on any available Jenkins agent
+    agent {
+        docker {
+            image 'python:3.8'
+            args '-u root' // Optional: runs as root inside container for full access
+        }
+    }
 
     environment {
         VENV_DIR = 'venv'
@@ -17,25 +22,10 @@ pipeline {
             steps {
                 echo 'Setting up virtual environment and installing dependencies...'
 
-                // Install python3 and python3-venv if missing
-                sh '''
-                    if ! command -v python3 > /dev/null 2>&1; then
-                        echo "🔧 Installing python3..."
-                        sudo apt update && sudo apt install -y python3
-                    else
-                        echo "python3 already installed."
-                    fi
-
-                    if ! python3 -m ensurepip --version > /dev/null 2>&1; then
-                        echo "🔧 Installing python3-venv..."
-                        sudo apt install -y python3-venv
-                    else
-                        echo "python3-venv already available."
-                    fi
-                '''
-
                 // Create virtual environment
                 sh 'python3 -m venv ${VENV_DIR}'
+
+                
             }
         }
 
