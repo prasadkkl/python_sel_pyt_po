@@ -16,18 +16,33 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 echo 'Setting up virtual environment and installing dependencies...'
-                
+
+                // Install python3 and python3-venv if missing
+                sh '''
+                    if ! command -v python3 > /dev/null 2>&1; then
+                        echo "🔧 Installing python3..."
+                        sudo apt update && sudo apt install -y python3
+                    else
+                        echo "python3 already installed."
+                    fi
+
+                    if ! python3 -m ensurepip --version > /dev/null 2>&1; then
+                        echo "🔧 Installing python3-venv..."
+                        sudo apt install -y python3-venv
+                    else
+                        echo "python3-venv already available."
+                    fi
+                '''
+
                 // Create virtual environment
                 sh 'python3 -m venv ${VENV_DIR}'
-
-                // Activate virtualenv and install requirements
             }
         }
 
         stage('Run Tests') {
             steps {
-                echo 'Executing tests using run_tests.sh...'
-                
+                echo 'Running tests via run_tests.sh...'
+
                 sh '''
                     source ${VENV_DIR}/bin/activate
                     ./run_tests.sh
@@ -45,16 +60,16 @@ pipeline {
 
     post {
         always {
-            echo 'Cleaning up...'
+            echo 'Cleaning up virtual environment...'
             sh 'rm -rf ${VENV_DIR}'
         }
 
         success {
-            echo 'Tests passed successfully.'
+            echo 'Pipeline completed successfully.'
         }
 
         failure {
-            echo 'Tests failed.'
+            echo 'Pipeline failed.'
         }
     }
 }
