@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo 'Cloning GitHub repository...'
-                git 'https://github.com/prasadkkl/python_sel_pyt_po.git'
+                git branch: 'main', url: 'https://github.com/prasadkkl/python_sel_pyt_po.git'
             }
         }
 
