@@ -18,7 +18,7 @@ pipeline {
                 echo 'Setting up virtual environment and installing dependencies...'
                 
                 // Create virtual environment
-                sh 'python3.8 -m venv ${VENV_DIR}'
+                sh 'python3 -m venv ${VENV_DIR}'
 
                 // Activate virtualenv and install requirements
             }
