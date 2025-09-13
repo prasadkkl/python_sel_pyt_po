@@ -34,7 +34,7 @@ pipeline {
                 echo 'Running tests via run_tests.sh...'
 
                 sh '''
-                    source ${VENV_DIR}/bin/activate
+                    . ${VENV_DIR}/bin/activate
                     ./run_tests.sh
                 '''
             }
