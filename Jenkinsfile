@@ -34,6 +34,7 @@ pipeline {
                 echo 'Running tests via run_tests.sh...'
 
                 sh '''
+                    chmod +x run_tests.sh
                     . ${VENV_DIR}/bin/activate
                     ./run_tests.sh
                 '''
