@@ -109,11 +109,18 @@ def pytest_runtest_makereport(item):
         report.extras = extra
 
 
-def _capture_screenshot(file_name):
+
+def _capture_screenshot(file_name, driver):
     """
     Helper function to capture screenshot and save to given file path.
 
     Args:
         file_name (str): Path where the screenshot will be saved
     """
-    driver.get_screenshot_as_file(file_name)
+    if driver:
+        try:
+            driver.get_screenshot_as_file(file_name)
+        except Exception as e:
+            print(f"Screenshot capture failed: {e}")
+    else:
+        print("Driver not available for screenshot.")
